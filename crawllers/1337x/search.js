@@ -13,7 +13,7 @@ async function search(search, site = O337X_SITE) {
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("tbody");
       if (!searchResults) {
-        return { error: true, errorMessage: "No results found" };
+        return {error: true, errorMessage: "Nenhum resultado encontrado"};
       }
       var tableRows = searchResults.querySelectorAll("tr");
       var results = [];
@@ -47,7 +47,7 @@ async function search(search, site = O337X_SITE) {
     return searchResults;
   } catch (err) {
     console.log(err);
-    return { error: true, errorMessage: "Runtime error occured" };
+    return { error: true, errorMessage: "Ocorreu um erro de tempo de execução" };
   }
 }
 
