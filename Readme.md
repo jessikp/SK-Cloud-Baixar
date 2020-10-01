@@ -1,70 +1,75 @@
-# Torrent all-in-one bot
+# SK Cloud Torrent
 
-Lorem ipsum i am too lazy figure what it does yourself
+Eu sou muito preguiçoso para descobrir o que isso faz você mesmo
 
-You might be lazy too so here ya go:
+Você pode ser preguiçoso também, então aqui está:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
-Please dont start a test torrent download on my website it works you dont need to just wastes my drive space. Be carefuk when adding torrents to my deployment as it is deployed everytime i commit code here so your downloads may be interrupted.
+Por favor, não inicie um download de torrent de teste no meu site, ele funciona, e você não precisa apenas desperdiçar ai espaço em disco. Tenha cuidado ao adicionar torrents à minha implantação, pois ela é implantada toda vez que eu coloco o código aqui para que seus downloads sejam interrompidos.
 
-## TODO after deploy
+## TODO após implantação - deploy
 
-### To disable website
+### Para desativar o site
 
-If you only want telegram bot to be workinh set value of DISABLE_WEB env var to true.
+Se você apenas deseja que o bot do telegram  funcione, defina o valor de DISABLE_WEB env var para true. (true - verdadeiro)
 
-### To get torrent download working:
+### Para fazer o download do torrent funcionar:
 
-Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
+Defina uma variável com a chave "SITE" e o valor é o link do seu site. por exemplo. "https://\<nome do projeto>.herokuapp.com". Isso é importante para manter o bot ativo ou o servidor irá parar após 30 minutos de inatividade.
+   
+### Para fazer a pesquisa funcionar:
 
-### To get search working:
+A biblioteca usada para web scrapping dos sites de torrent requer um buildpack personalizado no heroku. Por padrão, a pesquisa acontecerá em sua implantação e você precisará configurar o buildpack conforme descrito abaixo. Mas se não quiser fazer isso, você pode especificar e env SEARCH_SITE e definir o valor para https://torrent-aio-bot.herokuapp.com/. A barra frwd no final é necessária. Isso fará com que todas as pesquisas passem por minha implantação e você não precisará configurar o buildpack.
 
-The library used for web scrapping the torrent sites requires a custom buildpack on heroku. By default the search will happen on your deployment and you will need to configure the buildpack as described below. But if you don't want to do that you can specify and env SEARCH_SITE and set value to https://torrent-aio-bot.herokuapp.com/ . The frwd slash at end is necessary. This will make all the searches go thru my deployment and you don't need to configure buildpack.
+Vá para a seção de pacotes de compilação em configurações e clique em adicionar buildpack e digite "https://github.com/jontewks/puppeteer-heroku-buildpack.git" como o url do buildpack e clique em salvar alterações. E então faça um git commit fictício para que o heroku o construa usando o buildpack desta vez. Em seguida, defina SEARCH_SITE env para o mesmo valor de SITE.
 
-Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes. And then do a dummy git commit so that heroku will buid it using the buildpack this time. Then set the SEARCH_SITE env to same value as SITE.
+### Para fazer o upload do gdrive:
 
-### To get gdrive upload:
+1. Acesse https://developers.google.com/drive/api/v3/quickstart/nodejs e clique em Enable the Drive API
+copie o id do cliente e defina uma variável de ambiente no heroku com o nome CLIENT_ID e copie o segredo do cliente e defina outro env chamado CLIENT_SECRET.
+    
+2. Vá para https: // \ <nome do projeto> .herokuapp.com / drivehelp e cole seu ID de cliente e segredo e clique em "Obter código de autenticação", isso o redirecionará para o login e você obterá um código de autenticação após colar o login aquele código de autenticação no campo de código de autenticação e clique em "Gerar token - Generate token" ele lhe dará um token agora defina-os como a variável env CLIENT_ID, CLIENT_SECRET, AUTH_CODE e TOKEN.
 
-1. Go to https://developers.google.com/drive/api/v3/quickstart/nodejs and click on Enable the Drive API
-   copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
-2. Goto https://\<project name>.herokuapp.com/drivehelp and paste your client id and secret and click "Get auth code", it will redirect you to login and you'll get a auth code after login paste that auth code in the auth code feild and click "Generate token" it'll give you a token. now set these as env variable CLIENT_ID, CLIENT_SECRET, AUTH_CODE and TOKEN.
-3. By default files are uploaded in the root of drive if you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder. The folder id will be the last part of the url such as in url "https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-" the folder id is "1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-".
-4. If you want team drive support open your teamdrive and copy the folder id from url eg. https://drive.google.com/drive/u/0/folders/0ABZHZpfYfdVCUk9PVA this is link of a team drive copy the last part "0ABZHZpfYfdVCUk9PVA" this will be your GDRIVE_PARENT_FOLDER. If you want them in a folder in teamdrive open the folder and use that folder's id instead.
-5. You're good to go. The gdrive status will be shown in gdrive.txt file when you click Open on the website downloads page. Bot wil automatically send you drive link when its uploaded.
+3. Por padrão, os arquivos são carregados na raiz do drive, se você não quiser fazer o upload na pasta raiz, faça uma cópia da pasta com seu id e defina um env var GDRIVE_PARENT_FOLDER e um id de valor da pasta desejada. A id da pasta será a última parte da url, como na url "https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-" a id da pasta é "1rpk7tGWs_lv_kZ_W4EPaKj8brfF".
 
-> Use this torrent for testing or when downloading to setup drive it is well seeded and downloads in ~10s
+4. Se você deseja suporte para o Team Drive, abra o seu Teamdrive e copie o ID da pasta do url, por exemplo. https://drive.google.com/drive/u/0/folders/0ABZHZpfYfdVCUk9PVA este é o link de um drive de equipe copie a última parte "0ABZHZpfYfdVCUk9PVA" este será seu GDRIVE_PARENT_FOLDER. Se você quiser que eles fiquem em uma pasta no teamdrive, abra a pasta e use o id dessa pasta.
+
+5. Você está pronto para ir. O status do gdrive será mostrado no arquivo gdrive.txt quando você clicar em Abrir na página de downloads do site. O bot enviará automaticamente o link da unidade quando for carregado.
+
+> Use este torrent para teste ou ao fazer o download para a unidade de configuração, ele é bem propagado e baixa em ~ 10s
 >
-> magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny
+> magnet:? xt = urn: btih: dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c & dn = Big + Buck + Bunny
 
-### To start a torrent bot:
+### Para iniciar um bot torrent:
 
-Set a enviorment variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
-To set a enviorment variable go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
+Defina uma variável de ambiente com a chave "TELEGRAM_TOKEN" e o token do seu bot como valor. [How to get token] (https://core.telegram.org/bots/#creating-a-new-bot)
+Para definir uma variável de ambiente, vá para o painel do heroku, abra o aplicativo e vá para Configurações> Vars de configuração> Vars de configuração de revelação.
 
-## Changing the sites used for searching
+(Heroku Dashboard -- Settings > Config vars > Reveal Config vars.)
 
-To change the pirate bay site, visit the site you would like to use search something there, copy the url eg. https://thepiratebay.org/search/whatisearched and replace the search with {term} so the url looks like https://thepiratebay.org/search/{term} ans set this to env var PIRATEBAY_SITE
+## Alterar os sites usados para pesquisa
 
-Same, if you want to change the limetorrents site visit the site you want to use and search for something, then replace the thing you searched for with {term} so final url looks like https://limetorrents.at/search?search={term} and set this value to env var LIMETORRENT_SITE
+Para alterar o site do pirate bay, visite o site que deseja usar, pesquise algo lá, copie o url, por exemplo. https://thepiratebay.org/search/whatisearched e substitua a pesquisa por {term} para que o url se pareça com https://thepiratebay.org/search/{term} e defina-o como env var PIRATEBAY_SITE
 
-For 1337x env var name will be O337X_SITE
+Da mesma forma, se você deseja alterar o site do limetorrents, visite o site que deseja usar e pesquise algo, substitua o que você pesquisou por {term} para que o URL final fique parecido com https://limetorrents.at/search?search= {term} e defina este valor para env var LIMETORRENT_SITE
 
-## API Endpoints
+Para 1337x env, o nome da var será O337X_SITE
 
-prefix: https://\<project name>.herokuapp.com/api/v1
+## Endpoints da API
 
-### For downloading:
+prefixo: https://<nome do projeto>.herokuapp.com/api/v1
 
-| Endpoint          |    Params    |                                                                Return |
+### Para baixar:
+
+| Ponto Final       | Parametros   |                                                               Returno |
 | :---------------- | :----------: | --------------------------------------------------------------------: |
 | /torrent/download | link: string | { error: bool, link: string, infohash: string errorMessage?: string } |
 | /torrent/list     |     none     |                    {error: bool, torrents: [ torrent, torrent, ... ]} |
 | /torrent/remove   | link: string |                                { error: bool, errorMessage?: string } |
 | /torrent/status   | link: string |                 {error: bool, status: torrent, errorMessage?: string} |
 
-link is magnet uri of the torrent
-
+o link é o uri magnético do torrent
 ```
 torrent:  {
   magnetURI: string,
@@ -80,15 +85,15 @@ torrent:  {
 }
 ```
 
-### For searching:
+### Para pesquisar:
 
-| Endpoint        |            Params            |                                                          Return |
+| Ponto Final     |            Parametros        |                                                         Returno |
 | :-------------- | :--------------------------: | --------------------------------------------------------------: |
 | /search/{site}  | query: string, site?: string | {error: bool, results: [ result, ... ], totalResults: number, } |
 | /details/{site} |        query: string         |                                         {error: bool, torrent } |
 
-query is what you want to search for or the link of the torrent page
-site is the link to homepage of proxy to use must have a trailing '/'
+consulta é o que você deseja pesquisar ou o link da página do torrent
+site é o link para a página inicial do proxy a ser usado deve ter um '/' à direita
 
 ```
 result: {
@@ -106,4 +111,4 @@ torrent: {
 }
 ```
 
-sites available piratebay, 1337x, limetorrent
+sites disponíveis piratebay, 1337x, limetorrent
