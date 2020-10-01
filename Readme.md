@@ -4,7 +4,7 @@ Eu sou muito preguiçoso para descobrir o que isso faz você mesmo
 
 Você pode ser preguiçoso também, então aqui está:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/jessikp/SK-Cloud-Baixar-aio-bot)
 
 Por favor, não inicie um download de torrent de teste no meu site, ele funciona, e você não precisa apenas desperdiçar ai espaço em disco. Tenha cuidado ao adicionar torrents à minha implantação, pois ela é implantada toda vez que eu coloco o código aqui para que seus downloads sejam interrompidos.
 
