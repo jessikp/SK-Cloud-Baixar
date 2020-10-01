@@ -29,7 +29,7 @@ async function details(link) {
         i += 1;
       });
 
-      return { error: false, torrent: { title, info, downloadLink, details } };
+      return { error: false, torrent: {título, informação, downloadLink, detalhes}};
     });
 
     await page.close();
@@ -38,7 +38,7 @@ async function details(link) {
     return torrentDetails;
   } catch (err) {
     console.log(err);
-    return { error: true, errorMessage: "Runtime error occured" };
+    return { error: true, errorMessage: "Ocorreu um erro de tempo de execução"};
   }
 }
 
